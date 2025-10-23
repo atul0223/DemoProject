@@ -12,7 +12,7 @@ const openai = new OpenAI({
    
 config();
 const app = express();
-app.use(cors({ origin: "http://batchproject.vercel.com", credentials: true }));
+app.use(cors({ origin: "https://demo-project-gules.vercel.app", credentials: true }));
 app.use(json({ limit: "20kb" }));
 app.use(urlencoded({ extended: true, limit: "20kb" }));
 app.get("/calculate", async(req, res) => {
