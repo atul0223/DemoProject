@@ -36,7 +36,7 @@ const handleSendMessage = async(e) => {
     e.preventDefault();
     setLoading(true);
     try {console.log(name,email, message, phone);
-      await axios.post('http://localhost:3000/contactus', {
+      await axios.post('https://demoproject-2jzl.onrender.com/contactus', {
         name,email, message, phone
       },{withCredentials:true});
       setLoading(false);

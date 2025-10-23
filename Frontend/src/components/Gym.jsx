@@ -15,7 +15,7 @@ function Gym() {
 
 
     try {
-      const response = await axios.get('http://localhost:3000/calculate', {
+      const response = await axios.get('https://demoproject-2jzl.onrender.com/calculate', {
        foodInput
       });
       console.log(response.data);
