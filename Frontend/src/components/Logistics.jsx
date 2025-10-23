@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Package, Truck, MapPin, Clock, Search, ChevronDown, Menu, X, Phone, Mail, CheckCircle, AlertCircle } from 'lucide-react';
+import axios from 'axios';
+import { Package, Truck, MapPin, Clock, Search, Menu, X, Phone, Mail, CheckCircle, AlertCircle } from 'lucide-react';
 
 const LogisticsComponent = () => {
   const [activeTab, setActiveTab] = useState('track');
@@ -7,11 +8,10 @@ const LogisticsComponent = () => {
   const [trackingResult, setTrackingResult] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Simulate tracking lookup
   const handleTrackPackage = (e) => {
     e.preventDefault();
     if (trackingNumber.trim()) {
-      // Simulate API response
+ 
       setTrackingResult({
         trackingNumber: trackingNumber,
         status: 'In Transit',
@@ -27,7 +27,29 @@ const LogisticsComponent = () => {
       });
     }
   };
-
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [phone, setPhone] = useState(''); 
+  const[loading,setLoading]=useState(false);
+const handleSendMessage = async(e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {console.log(name,email, message, phone);
+      await axios.post('http://localhost:3000/contactus', {
+        name,email, message, phone
+      },{withCredentials:true});
+      setLoading(false);
+      alert('Message sent successfully');
+      setName('');
+      setEmail('');
+      setMessage('');
+      setPhone('');
+      
+    } catch (error) {
+      setLoading(false);
+    }
+  }
   const services = [
     { icon: <Truck className="w-8 h-8" />, title: 'Express Delivery', desc: 'Fast shipping within 24-48 hours' },
     { icon: <Package className="w-8 h-8" />, title: 'Standard Shipping', desc: 'Reliable delivery in 3-5 days' },
@@ -53,7 +75,6 @@ const LogisticsComponent = () => {
               <h1 className="text-2xl font-bold text-gray-900">SwiftLogistics</h1>
             </div>
 
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
               <button onClick={() => setActiveTab('track')} className={`font-medium ${activeTab === 'track' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
                 Track Shipment
@@ -69,7 +90,6 @@ const LogisticsComponent = () => {
               </button>
             </nav>
 
-            {/* Mobile Menu Button */}
             <button 
               className="md:hidden text-gray-600"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -78,7 +98,6 @@ const LogisticsComponent = () => {
             </button>
           </div>
 
-          {/* Mobile Navigation */}
           {mobileMenuOpen && (
             <div className="md:hidden py-4 border-t border-gray-200">
               <nav className="flex flex-col gap-4">
@@ -111,7 +130,7 @@ const LogisticsComponent = () => {
             </div>
 
             <div className="max-w-2xl mx-auto">
-              <form onSubmit={handleTrackPackage} className="bg-white rounded-lg shadow-md p-6 mb-8">
+              <form onSubmit={handleTrackPackage} className="bg-white rounded-lg shadow-md p-6 mb-8 text-black">
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex-1">
                     <input
@@ -119,7 +138,7 @@ const LogisticsComponent = () => {
                       value={trackingNumber}
                       onChange={(e) => setTrackingNumber(e.target.value)}
                       placeholder="Enter tracking number (e.g., SWIFT123456789)"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                     />
                   </div>
                   <button
@@ -230,22 +249,22 @@ const LogisticsComponent = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">From (City)</label>
-                    <input type="text" placeholder="Origin city" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="Origin city" className="text-black w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">To (City)</label>
-                    <input type="text" placeholder="Destination city" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="Destination city" className="w-full px-4 py-3 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Weight (kg)</label>
-                    <input type="number" placeholder="0.0" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="number" placeholder="0.0" className="w-full px-4 py-3 border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Service Type</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label className="block text-sm font-medium text-gray-700 mb-2 ">Service Type</label>
+                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black">
                       <option>Express Delivery</option>
                       <option>Standard Shipping</option>
                       <option>International</option>
@@ -257,15 +276,15 @@ const LogisticsComponent = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Length (cm)</label>
-                    <input type="number" placeholder="0" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="number" placeholder="0" className="w-full px-4 py-3 border border-gray-300  text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Width (cm)</label>
-                    <input type="number" placeholder="0" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="number" placeholder="0" className="w-full px-4 py-3 border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Height (cm)</label>
-                    <input type="number" placeholder="0" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="number" placeholder="0" className="w-full px-4 py-3 border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
                 </div>
 
@@ -288,24 +307,24 @@ const LogisticsComponent = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-6">Send us a message</h3>
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleSendMessage}>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                    <input type="text" placeholder="John Doe" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="John Doe" className="w-full px-4 py-3 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500" value={name} onChange={(e)=>setName(e.target.value)}/>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                    <input type="email" placeholder="john@example.com" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="email" placeholder="john@example.com" className="w-full px-4 py-3 border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={email} onChange={(e)=>setEmail(e.target.value)}/>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                    <input type="tel" placeholder="+91 98765 43210" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="tel" placeholder="+91 98765 43210" className="w-full px-4 py-3 border border-gray-300 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value={phone} onChange={(e)=>setPhone(e.target.value)} />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                    <textarea rows="4" placeholder="How can we help you?" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    <textarea rows="4" placeholder="How can we help you?" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black" value={message} onChange={(e)=>setMessage(e.target.value)}></textarea>
                   </div>
-                  <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
+                  <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition cursor-pointer" disabled={loading}>
                     Send Message
                   </button>
                 </form>
@@ -387,7 +406,7 @@ const LogisticsComponent = () => {
               <h4 className="font-semibold mb-4">Newsletter</h4>
               <p className="text-gray-400 mb-4">Subscribe for updates and special offers</p>
               <div className="flex gap-2">
-                <input type="email" placeholder="Your email" className="flex-1 px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-blue-500" />
+                <input type="email" placeholder="Your email" className="flex-1 px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:outline-none  focus:border-blue-500" />
                 <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition">Subscribe</button>
               </div>
             </div>

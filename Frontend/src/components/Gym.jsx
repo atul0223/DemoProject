@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import OpenAI from 'openai'; // Make sure to install: npm install openai
 import axios from 'axios';
 
 function Gym() {
@@ -16,7 +15,7 @@ function Gym() {
 
 
     try {
-      const response = await axios.get('http://localhost:3000/', {
+      const response = await axios.get('http://localhost:3000/calculate', {
        foodInput
       });
       console.log(response.data);
